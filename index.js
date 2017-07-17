@@ -23,7 +23,7 @@ function PlaybulbCandle(log, config) {
         "values" : rgbConversion.rgbToHsl(255, 255, 255)
     };
     this.mac = config.mac.toLowerCase();
-    this.handle = config.handle || "fffc";
+    this.handle = "fffc";
 
     this.findBulb(this.mac);
 
@@ -84,7 +84,11 @@ PlaybulbCandle.prototype.writeColor = function(callback) {
             return;
         }
         var rgb = rgbConversion.hslToRgb(that.ledsStatus.values[0], that.ledsStatus.values[1], that.ledsStatus.values[2]);
-        that.peripheral.writeHandle(that.handle, new Buffer.from([rgb.r, rgb.g, rgb.b],'hex'), true, function (error) {
+
+        //
+        
+        //
+        that.peripheral.writeHandle(that.handle, new Buffer([0, r, g, b],'hex'), true, function (error) {
             if (error) console.log('BLE: Write handle Error: ' + error);
             callback();
         });
