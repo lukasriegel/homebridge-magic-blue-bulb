@@ -155,10 +155,13 @@ PlaybulbCandle.prototype.setState = function(status, callback) {
 
         var colorBytes = new Buffer([0, rgb.r, rgb.g, rgb.b],'hex');
         if(that.ledsStatus.on == true){
-            colorBytes = new Buffer([0, rgb.r, rgb.g, rgb.b],'hex');
+            that.ledsStatus.on = false;
+            colorBytes = new Buffer([0, 0, 0, 0],'hex');
         }
         else{
-            colorBytes = new Buffer([0, 0, 0, 0],'hex');
+            that.ledsStatus.on = true;
+            var r = randInt(256), g = randInt(256), b = randInt(256);
+            colorBytes = new Buffer([0, r, g, b],'hex');
         }
         that.peripheral.colorChar.write(colorBytes, true, function (error) {
             if (error) console.log('BLE: Write handle Error: ' + error);
