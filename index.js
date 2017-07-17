@@ -123,9 +123,9 @@ PlaybulbCandle.prototype.attemptConnect = function(callback){
                 that.log("reconnect was successful");
                 that.peripheral.discoverAllServicesAndCharacteristics(); 
                 that.log("discoverAllServicesAndCharacteristics");
-                that.peripheral.on('servicesDiscover', function (services) {
+                that.peripheral.once('servicesDiscover', function (services) {
                     services.map(function (service) {
-                        service.on('characteristicsDiscover', function (characteristics) {
+                        service.once('characteristicsDiscover', function (characteristics) {
                             characteristics.map(function (characteristic) {
                                 if (characteristic.uuid === types["CANDLE"].colorUuid) {
                                     that.peripheral.colorChar = characteristic;
@@ -157,13 +157,13 @@ PlaybulbCandle.prototype.setState = function(status, callback) {
     } 
     var temp = function(res) {
         if (!res) {
-            //callback(new Error());
+            callback(new Error());
             return;
         }
         var rgb = rgbConversion.hslToRgb(that.ledsStatus.values[0], that.ledsStatus.values[1], that.ledsStatus.values[2]);
         that.log("setState" +  that.ledsStatus.on);
         var colorBytes = new Buffer([0, rgb.r, rgb.g, rgb.b],'hex');
-        if(that.ledsStatus.on == true){
+        if(that.ledsStatus.on == 1){
             that.ledsStatus.on = 0;
             colorBytes = new Buffer([0, 0, 0, 0],'hex');
         }
