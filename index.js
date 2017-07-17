@@ -36,7 +36,7 @@ function PlaybulbCandle(log, config) {
     this.log = log;
     this.name = config.name;
     this.ledsStatus = {
-        "on" : false,
+        "on" : true,
         "values" : rgbConversion.rgbToHsl(0, 0, 0)
     };
     this.mac = config.mac.toLowerCase();
@@ -121,13 +121,15 @@ PlaybulbCandle.prototype.attemptConnect = function(callback){
         this.peripheral.connect(function(error) {
             if (!error) {
                 that.log("reconnect was successful");
-                that.peripheral.discoverAllServicesAndCharacteristics();
+                that.peripheral.discoverAllServicesAndCharacteristics(); 
+                that.log("discoverAllServicesAndCharacteristics");
                 that.peripheral.on('servicesDiscover', function (services) {
                     services.map(function (service) {
                         service.on('characteristicsDiscover', function (characteristics) {
                             characteristics.map(function (characteristic) {
                                 if (characteristic.uuid === types["CANDLE"].colorUuid) {
                                     that.peripheral.colorChar = characteristic;
+                                    that.log("CANDLE colorUuid set" );
                                     callback(true);
                                 } else if (characteristic.uuid === types["CANDLE"].effectsUuid) {
                                     that.peripheral.effectsChar = characteristic;
@@ -156,7 +158,7 @@ PlaybulbCandle.prototype.setState = function(status, callback) {
             return;
         }
         var rgb = rgbConversion.hslToRgb(that.ledsStatus.values[0], that.ledsStatus.values[1], that.ledsStatus.values[2]);
-
+        that.log("setState" +  that.ledsStatus.on);
         var colorBytes = new Buffer([0, rgb.r, rgb.g, rgb.b],'hex');
         if(that.ledsStatus.on == true){
             that.ledsStatus.on = false;
