@@ -4,6 +4,19 @@ var HomebridgeAPI;
 var noble = require('noble');
 var rgbConversion = require("./rgbConversion");
 
+var SETCOLOR = -1;
+var types = {
+    CANDLE: {
+        colorUuid: "fffc",
+        effectsUuid: "fffb",
+        modes: {
+            FADE: 0,
+            JUMPRGB: 1,
+            FADERGB: 2,
+            FLICKER: 3
+        }
+    }
+};
 
 module.exports = function(homebridge) {
     Service = homebridge.hap.Service;
@@ -88,7 +101,8 @@ PlaybulbCandle.prototype.writeColor = function(callback) {
         //
         
         //
-        that.peripheral.writeHandle(that.handle, new Buffer([0, rgb.r, rgb.g, rgb.b],'hex'), true, function (error) {
+         var colorBytes = new Buffer([0, rgb.r, rgb.g, rgb.b],'hex');
+        that.peripheral.colorChar.write(colorBytes, true, function (error) {
             if (error) console.log('BLE: Write handle Error: ' + error);
             callback();
         });
@@ -97,6 +111,7 @@ PlaybulbCandle.prototype.writeColor = function(callback) {
 };
 
 PlaybulbCandle.prototype.attemptConnect = function(callback){
+    var that = this;
     if (this.peripheral && this.peripheral.state == "connected") {
         callback(true);
     } else if (this.peripheral && this.peripheral.state == "disconnected") {
@@ -105,6 +120,22 @@ PlaybulbCandle.prototype.attemptConnect = function(callback){
         this.peripheral.connect(function(error) {
             if (!error) {
                 that.log("reconnect was successful");
+                that.peripheral.discoverAllServicesAndCharacteristics();
+                that.peripheral.on('servicesDiscover', function (services) {
+                    services.map(function (service) {
+                        service.on('characteristicsDiscover', function (characteristics) {
+                            characteristics.map(function (characteristic) {
+                                if (characteristic.uuid === colorUuid) {
+                                    that.peripheral.colorChar = characteristic;
+                                    //isReady();
+                                } else if (characteristic.uuid === effectsUuid) {
+                                    that.peripheral.effectsChar = characteristic;
+                                    //isReady();
+                                }
+                            });
+                        });
+                    });
+                });
                 callback(true);
             } else {
                 that.log("reconnect was unsuccessful");
