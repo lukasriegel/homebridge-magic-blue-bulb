@@ -124,12 +124,11 @@ PlaybulbCandle.prototype.attemptConnect = function(callback){
                             characteristics.map(function (characteristic) {
                                 if (characteristic.uuid === types["CANDLE"].colorUuid) {
                                     that.peripheral.colorChar = characteristic;
-                                    //isReady();
+                                    callback(true);
                                 } else if (characteristic.uuid === types["CANDLE"].effectsUuid) {
                                     that.peripheral.effectsChar = characteristic;
                                     //isReady();
                                 }
-                                callback(true);
                             });
                         });
                     });
