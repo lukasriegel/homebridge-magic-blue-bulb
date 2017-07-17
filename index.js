@@ -88,7 +88,7 @@ PlaybulbCandle.prototype.writeColor = function(callback) {
         //
         
         //
-        that.peripheral.writeHandle(that.handle, new Buffer([0, r, g, b],'hex'), true, function (error) {
+        that.peripheral.writeHandle(that.handle, new Buffer([0, rgb.r, rgb.g, rgb.b],'hex'), true, function (error) {
             if (error) console.log('BLE: Write handle Error: ' + error);
             callback();
         });
