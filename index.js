@@ -18,6 +18,10 @@ var types = {
     }
 };
 
+function randInt(n) {
+    return Math.floor(Math.random() * n);
+}
+
 module.exports = function(homebridge) {
     Service = homebridge.hap.Service;
     Characteristic = homebridge.hap.Characteristic;
