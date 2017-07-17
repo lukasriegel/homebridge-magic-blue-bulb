@@ -147,12 +147,21 @@ PlaybulbCandle.prototype.setState = function(status, callback) {
         code = 0x23;
     } 
     var temp = function(res) {
-        if (!that.peripheral || !res) {
-            callback(new Error());
+        if (!res) {
+            //callback(new Error());
             return;
         }
-        that.peripheral.writeHandle(that.handle, new Buffer([0xcc, code, 0x33]), true, function (error) {
-            if (error) that.log('BLE: Write handle Error: ' + error);
+        var rgb = rgbConversion.hslToRgb(that.ledsStatus.values[0], that.ledsStatus.values[1], that.ledsStatus.values[2]);
+
+        var colorBytes = new Buffer([0, rgb.r, rgb.g, rgb.b],'hex');
+        if(that.ledsStatus.on == true){
+            colorBytes = new Buffer([0, rgb.r, rgb.g, rgb.b],'hex');
+        }
+        else{
+            colorBytes = new Buffer([0, 0, 0, 0],'hex');
+        }
+        that.peripheral.colorChar.write(colorBytes, true, function (error) {
+            if (error) console.log('BLE: Write handle Error: ' + error);
             callback();
         });
     };
