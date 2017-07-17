@@ -23,7 +23,7 @@ function MagicBlueBulb(log, config) {
         "values" : rgbConversion.rgbToHsl(255, 255, 255)
     };
     this.mac = config.mac.toLowerCase();
-    this.handle = config.handle || 0x000c; // v9 is 0x000b
+    this.handle = config.handle ||�fffc;
 
     this.findBulb(this.mac);
     
@@ -33,8 +33,8 @@ function MagicBlueBulb(log, config) {
     this.informationService = new Service.AccessoryInformation();
         
     this.informationService
-        .setCharacteristic(Characteristic.Manufacturer, config.manufacturer || "Light")
-        .setCharacteristic(Characteristic.Model, config.model || "Magic Blue")
+        .setCharacteristic(Characteristic.Manufacturer, config.manufacturer || "MiPow")
+        .setCharacteristic(Characteristic.Model, config.model || "Playbulb Candle")
         .setCharacteristic(Characteristic.SerialNumber, config.serial || "5D4989E80E44");
 
 
@@ -89,7 +89,7 @@ MagicBlueBulb.prototype.writeColor = function(callback) {
             return;
         }
         var rgb = rgbConversion.hslToRgb(that.ledsStatus.values[0], that.ledsStatus.values[1], that.ledsStatus.values[2]);
-        that.peripheral.writeHandle(that.handle, new Buffer([0x56, rgb.r, rgb.g, rgb.b, 0x00, 0xf0, 0xaa, 0x3b, 0x07, 0x00, 0x01]), true, function (error) {
+        that.peripheral.writeHandle(that.handle, new Buffer([0, rgb.r, rgb.g, rgb.b],'hex'), true, function (error) {
             if (error) console.log('BLE: Write handle Error: ' + error);
             callback();
         });

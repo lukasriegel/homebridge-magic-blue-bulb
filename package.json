@@ -1,7 +1,7 @@
 {
-  "name": "homebridge-magic-blue-bulb",
-  "version": "1.0.2",
-  "description": "Homebridge plugin for the MagicBlue LED Lightbulbs",
+  "name": "homebridge-mipow-playbulb-candle",
+  "version": "1.0.1",
+  "description": "Homebridge plugin for the MiPow Playbulb Candle",
   "main": "index.js",
   "devDependencies": {},
   "scripts": {
@@ -9,22 +9,22 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/lucavb/homebridge-magic-blue-bulb.git"
+    "url": "git+https://github.com/lukasriegel/homebridge-magic-blue-bulb.git"
   },
   "keywords": [
     "homebridge-plugin"
   ],
-  "author": "Luca Becker",
+  "author": "Lukas Riegelr",
   "license": "GPL-3.0",
   "bugs": {
-    "url": "https://github.com/lucavb/homebridge-magic-blue-bulb/issues"
+    "url": "https://github.com/lukasriegel/homebridge-magic-blue-bulb/issues"
   },
-  "homepage": "https://github.com/lucavb/homebridge-magic-blue-bulb#readme",
+  "homepage": "https://github.com/lukasriegel/homebridge-magic-blue-bulb#readme",
   "engines" : {
       "node": ">=0.12.0",
       "homebridge": ">=0.2.0"
   },
   "dependencies" :{ 
-    "noble" : "1.8.0"
+    "noble" : "1.8.1"
   }
 }
