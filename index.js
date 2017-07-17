@@ -32,8 +32,8 @@ function PlaybulbCandle(log, config) {
     this.log = log;
     this.name = config.name;
     this.ledsStatus = {
-        "on" : true,
-        "values" : rgbConversion.rgbToHsl(255, 255, 255)
+        "on" : false,
+        "values" : rgbConversion.rgbToHsl(0, 0, 0)
     };
     this.mac = config.mac.toLowerCase();
     this.handle = "fffc";
@@ -98,10 +98,7 @@ PlaybulbCandle.prototype.writeColor = function(callback) {
         }
         var rgb = rgbConversion.hslToRgb(that.ledsStatus.values[0], that.ledsStatus.values[1], that.ledsStatus.values[2]);
 
-        //
-        
-        //
-         var colorBytes = new Buffer([0, rgb.r, rgb.g, rgb.b],'hex');
+        var colorBytes = new Buffer([0, rgb.r, rgb.g, rgb.b],'hex');
         that.peripheral.colorChar.write(colorBytes, true, function (error) {
             if (error) console.log('BLE: Write handle Error: ' + error);
             callback();
@@ -132,11 +129,11 @@ PlaybulbCandle.prototype.attemptConnect = function(callback){
                                     that.peripheral.effectsChar = characteristic;
                                     //isReady();
                                 }
+                                callback(true);
                             });
                         });
                     });
                 });
-                callback(true);
             } else {
                 that.log("reconnect was unsuccessful");
                 callback(false);
