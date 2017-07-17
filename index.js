@@ -125,10 +125,10 @@ PlaybulbCandle.prototype.attemptConnect = function(callback){
                     services.map(function (service) {
                         service.on('characteristicsDiscover', function (characteristics) {
                             characteristics.map(function (characteristic) {
-                                if (characteristic.uuid === colorUuid) {
+                                if (characteristic.uuid === types["CANDLE"].colorUuid) {
                                     that.peripheral.colorChar = characteristic;
                                     //isReady();
-                                } else if (characteristic.uuid === effectsUuid) {
+                                } else if (characteristic.uuid === types["CANDLE"].effectsUuid) {
                                     that.peripheral.effectsChar = characteristic;
                                     //isReady();
                                 }
