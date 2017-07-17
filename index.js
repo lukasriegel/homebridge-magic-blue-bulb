@@ -36,7 +36,7 @@ function PlaybulbCandle(log, config) {
     this.log = log;
     this.name = config.name;
     this.ledsStatus = {
-        "on" : true,
+        "on" : 1,
         "values" : rgbConversion.rgbToHsl(0, 0, 0)
     };
     this.mac = config.mac.toLowerCase();
@@ -145,6 +145,9 @@ PlaybulbCandle.prototype.attemptConnect = function(callback){
             }
         });
     }
+    else{
+        that.findBulb(that.mac);
+    }
 }
 
 PlaybulbCandle.prototype.setState = function(status, callback) {
@@ -161,11 +164,11 @@ PlaybulbCandle.prototype.setState = function(status, callback) {
         that.log("setState" +  that.ledsStatus.on);
         var colorBytes = new Buffer([0, rgb.r, rgb.g, rgb.b],'hex');
         if(that.ledsStatus.on == true){
-            that.ledsStatus.on = false;
+            that.ledsStatus.on = 0;
             colorBytes = new Buffer([0, 0, 0, 0],'hex');
         }
         else{
-            that.ledsStatus.on = true;
+            that.ledsStatus.on = 1;
             var r = randInt(256), g = randInt(256), b = randInt(256);
             colorBytes = new Buffer([0, r, g, b],'hex');
         }
